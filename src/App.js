@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-function App() {
+import TableList from "./components/TabeList";
+
+const App = () => {
+  const [mainData, setMainData] = useState([]);
+  useEffect(() => {
+    const url = `https://jsonplaceholder.typicode.com/photos`;
+    axios({
+      method: "get",
+      url,
+      params: {
+        _limit: 30,
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        setMainData(res.data);
+      })
+      .catch((err) => err);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <TableList columnData={mainData} />;
     </div>
   );
-}
+};
 
 export default App;
